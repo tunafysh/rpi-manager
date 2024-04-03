@@ -1,20 +1,8 @@
 const currentURL = new URL(window.location.href);
 
-let buttonOn = document.getElementById('ledonbutton');
-let buttonOff = document.getElementById('ledoffbutton');
 
 
-
-// Add event listener for 'change' event on toggleBtn1
-buttonOn.addEventListener('click', e =>{
-    const btn1 = bootstrap.Button.getInstance(buttonOff)
-    btn1.toggle()
-})
-
-buttonOff.addEventListener('click', e =>{
-    const btn2 = bootstrap.Button.getInstance(buttonOn)
-    btn2.toggle()
-})
+// .addEventListener()
 
 let ws = new WebSocket("ws://localhost:3000/ws");
 
@@ -30,3 +18,17 @@ ws.addEventListener("message", (event) => {
     console.log(currentURL)
 });
 
+let onswitchlbl = document.getElementById("OnSwitchLabel");
+
+let onswitch = document.getElementById('OnSwitch');
+onswitch.addEventListener('click', () => {
+    if (onswitch.checked) {
+        onswitchlbl.innerHTML = "On"
+        console.log('on')
+        ws.send("on")
+    } else {
+        onswitchlbl.innerHTML = "Off"
+        console.log('off')
+        ws.send("off")
+    }
+})
