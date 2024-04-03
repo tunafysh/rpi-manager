@@ -1,11 +1,26 @@
 import { Elysia } from "elysia";
 const app = new Elysia()
+const gpio = require("onoff").gpio
+
+
 
 app.get('/', () => Bun.file('src/index.html'))
 
 app.get('/style.css', () => Bun.file('src/style.css'))
 
 app.get('/script.js', () => Bun.file('src/script.js'))
+
+app.ws('/ws', {
+  open: () => {
+    console.log('open')
+  },
+  message: (message) => {
+    console.log(message)
+  },
+  close: () => {
+    console.log('close')
+  }
+})
 
 app.listen(3000);
 
