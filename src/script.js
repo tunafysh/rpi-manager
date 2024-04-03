@@ -1,10 +1,15 @@
 const currentURL = new URL(window.location.href);
 
+let ledconfig = {
+    pin: Number,
+    status: Boolean
+}
 
+ledconfig.pin = 3
+ledconfig.output = true
+ledconfig.status = false
 
-// .addEventListener()
-
-let ws = new WebSocket("ws://localhost:3000/ws");
+let ws = new WebSocket("ws://localhost:3000/");
 
 // Connection opened
 ws.addEventListener("open", (event) => {
@@ -15,8 +20,10 @@ ws.addEventListener("open", (event) => {
 // Listen for messages
 ws.addEventListener("message", (event) => {
     // ws.send("Hello Server!")
-    console.log(currentURL)
+    console.log(event.data)
 });
+
+
 
 let onswitchlbl = document.getElementById("OnSwitchLabel");
 
@@ -25,10 +32,12 @@ onswitch.addEventListener('click', () => {
     if (onswitch.checked) {
         onswitchlbl.innerHTML = "On"
         console.log('on')
-        ws.send("on")
+        ledconfig.status = true
+        ws.send(JSON.stringify(ledconfig))
     } else {
         onswitchlbl.innerHTML = "Off"
         console.log('off')
-        ws.send("off")
+        ledconfig.status = false
+        ws.send(ledconfig.stringify())
     }
 })

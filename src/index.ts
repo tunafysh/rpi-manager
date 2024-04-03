@@ -1,25 +1,27 @@
-import { Elysia } from "elysia";
+import { ELYSIA_RESPONSE, Elysia } from "elysia";
 const app = new Elysia()
 const gpio = require("onoff").gpio
 
 app.get('/', () => Bun.file('src/index.html'))
 
-app.get('/style.css', () => Bun.file('src/style.css'))
-
 app.get('/script.js', () => Bun.file('src/script.js'))
 
-app.ws('/ws', {
-  open: (message) => {
-    console.log('open')
-    // console.log(message)
-  },
-  message: (message) => {
-    message.send('Hello client!')
+app.ws('/', {
+  message: (ws, message) => {
     console.log(message)
+    let stringifiedconfig = JSON.stringify(message);
+
+    let ledconfig = JSON.parse(stringifiedconfig);
+
+    const led = new gpio(ledconfig.pin, 'OUT');
+
+    if(ledconfig.status === true){
+      led.writeSync(1);
+    }
+    else{
+      led.writeSync(0);
+    }
   },
-  close: () => {
-    console.log('close')
-  }
 })
 
 app.listen(3000);
