@@ -1,3 +1,14 @@
+if (typeof jQuery === "undefined") {
+    var script = document.createElement('script');
+    script.src = 'http://code.jquery.com/jquery-latest.min.js';
+    script.type = 'text/javascript';
+    document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+window.onload = function() {
+    $(function(){ console.log("jQuery + DOM loaded."); });
+}
+
 const currentURL = new URL(window.location.href);
 
 let ledconfig = {
@@ -6,7 +17,6 @@ let ledconfig = {
 }
 
 ledconfig.pin = 3
-ledconfig.output = true
 ledconfig.status = false
 
 let ws = new WebSocket("ws://localhost:3000/");
@@ -27,7 +37,7 @@ ws.addEventListener("message", (event) => {
 
 let onswitchlbl = document.getElementById("OnSwitchLabel");
 
-let onswitch = document.getElementById('OnSwitch');
+let onswitch = $('#OnSwitch');
 onswitch.addEventListener('click', () => {
     if (onswitch.checked) {
         onswitchlbl.innerHTML = "On"

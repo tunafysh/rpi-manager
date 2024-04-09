@@ -1,6 +1,6 @@
 import { ELYSIA_RESPONSE, Elysia } from "elysia";
 const app = new Elysia()
-const gpio = require("onoff").gpio
+// const gpio = require("onoff").gpio
 
 app.get('/', () => Bun.file('src/index.html'))
 
@@ -13,13 +13,14 @@ app.ws('/', {
 
     let ledconfig = JSON.parse(stringifiedconfig);
 
-    const led = new gpio(ledconfig.pin, 'OUT');
+    console.log(`led with ${ledconfig.pin} and status ${ledconfig.status} created`)
 
     if(ledconfig.status === true){
-      led.writeSync(1);
+      // led.writeSync(1);
+      console.log("led on")
     }
     else{
-      led.writeSync(0);
+      console.log("led off")
     }
   },
 })
